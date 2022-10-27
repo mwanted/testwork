@@ -6,9 +6,9 @@
 
 ### Сборка контейнера
 
-'''
+```
 build/build.sh
-'''
+```
 
 результат будет залит в репозиторий
 
@@ -16,12 +16,12 @@ helm-chart настроен на репозиторий docker.io/remidor/privat
 
 ### деплой:
 
-'''
+```
 helm install testwork ./chart 
-'''
+```
 
 или
 
-'''
+```
 helm install testwork ./chart --set databackend=sqlite
-'''
+```
