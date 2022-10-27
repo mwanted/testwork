@@ -32,5 +32,5 @@ def user_post():
 if __name__ == '__main__':
 #	logging.config.fileConfig(configFile)
 #	logger = logging.getLogger("testwork")
-	run(host='0.0.0.0', port=8088, debug=True)
+	run(host='0.0.0.0', port=80, debug=True)
 	
