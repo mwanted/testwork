@@ -8,6 +8,6 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 ADD app.tar /app
 
-EXPOSE 8088
+EXPOSE 80
 
 CMD ["python", "app.py"]
