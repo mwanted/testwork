@@ -33,10 +33,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DATABACKEND
+              value: {{ .Values.databackend }}
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }} 
           livenessProbe:
             httpGet:
               path: {{ .Values.healthcheck.livenessUrl }}
@@ -47,6 +52,8 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}     
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

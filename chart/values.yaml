@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: docker.io/remidor/private
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "testwork"
 
@@ -71,6 +71,17 @@ resources: {}
 healthcheck:
   livenessUrl: "/hello"
   readinessUrl: "/hello"
+
+volumes:
+  - name: testwork
+    hostPath:
+      path: /srv/testwork.data
+
+volumeMounts:
+  - name: testwork
+    mountPath: /app/data
+
+databackend: file
 
 autoscaling:
   enabled: false
