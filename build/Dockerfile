@@ -1,8 +1,10 @@
 FROM python:3.6.5-slim
 
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
-
 WORKDIR /app
+
+COPY requirements.txt requirements.txt
+
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 ADD app.tar /app
 
