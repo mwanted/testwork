@@ -38,7 +38,7 @@ spec:
               value: {{ .Values.databackend }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8088
               protocol: TCP
           volumeMounts:
             {{- toYaml .Values.volumeMounts | nindent 12 }} 
