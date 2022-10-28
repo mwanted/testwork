@@ -1,2 +1,3 @@
 bottle
 db-sqlite3
+prometheus-client

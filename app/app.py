@@ -5,11 +5,13 @@ from datetime import datetime
 #import logger
 import sqlite3
 import os
+import prometheus_client
 
 #configFile = "data/testwork.conf"
 
 outfile = "data/testwork.log"
 outdb = "data/testwork.db"
+
 
 def write_data(name):
 	if databackend == "sqlite":
@@ -31,6 +33,7 @@ def helloPage():
 
 @route('/user')
 def user_get():
+	c.labels('get','/user').inc()
 	if databackend != "sqlite":
 		return HTTPResponse(status=500, body="Wrong backend")
 	name = request.query.name
@@ -49,6 +52,7 @@ def user_get():
 
 @post('/user')
 def user_post():
+	c.labels('post','/user').inc()
 	name = ""
 	data = request.body.read().decode()
 	try:
@@ -62,6 +66,10 @@ def user_post():
 	except Exception as e:
 		return HTTPResponse(status=500, body=str(e))
 	return f"parsed: {name}"
+
+@route('/metrics')
+def metrics():
+	return prometheus_client.generate_latest(c)
 
 def db_connect(db):
 	try:
@@ -78,7 +86,11 @@ def db_connect(db):
 if __name__ == '__main__':
 #	logging.config.fileConfig(configFile)
 #	logger = logging.getLogger("testwork")
-	databackend = os.environ['DATABACKEND']
+	c = prometheus_client.Counter('requests_total', 'Totals', ['method', 'endpoint'])
+	try:
+		databackend = os.environ['DATABACKEND']
+	except KeyError:
+		databackend = "sqlite"
 	if databackend == "sqlite":
 		sqlite_connection = db_connect(outdb)
 	run(host='0.0.0.0', port=8088, debug=True)
